@@ -1,5 +1,6 @@
 # Import MINST data
-import input_data
+from sample import input_data
+
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
 import tensorflow as tf
