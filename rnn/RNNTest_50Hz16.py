@@ -152,16 +152,20 @@ def inference(x):
 
 
 def loss(model, y):
+    #신경망의 손실값을 구함
     cost_pre = tf.nn.softmax_cross_entropy_with_logits_v2(logits=model, labels=Y, name="cost_pre")
     cost = tf.reduce_mean(cost_pre, name="cost")
     return cost
 
 def training(cost, global_step, model):
+    #모델을 훈련시키는 메소드
+    #손실값을 저장(텐서보드를 통해 loss값 확인하기 위함)
     tf.summary.scalar("cost", cost)
     optimizer = tf.train.AdamOptimizer(learning_rate).minimize(cost, global_step=global_step, name="optimizer")
     return optimizer
 
 def evaluate(model, y):
+    #만든 모댈을 평가하느 메소드
     is_correct = tf.equal(tf.argmax(model, 1), tf.argmax(Y, 1), name="is_correct")
     accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32), name="accuracy")
     tf.summary.scalar("acc", accuracy)

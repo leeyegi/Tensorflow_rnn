@@ -1,6 +1,0 @@
-model_checkpoint_path: "rnn_model.ckpt"
-all_model_checkpoint_paths: "rnn_50hz_16\\model-checkpoint-114"
-all_model_checkpoint_paths: "rnn_50hz_16\\model-checkpoint-116"
-all_model_checkpoint_paths: "rnn_50hz_16\\model-checkpoint-118"
-all_model_checkpoint_paths: "rnn_50hz_16\\model-checkpoint-120"
-all_model_checkpoint_paths: "rnn_model.ckpt"

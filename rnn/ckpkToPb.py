@@ -2,11 +2,26 @@ import tensorflow as tf
 from tensorflow.python.tools import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
 
+MODEL_NAME = 'rnn_model'
+
+input_graph_path = "../rnn_model_check.pbtxt"
+checkpoint_path = '../rnn_model_check.ckpt'
+restore_op_name = "save/restore_all"
+filename_tensor_name = "save/Const:0"
+output_frozen_graph_name = '../frozen_rnn_model_check.pb'
+
+freeze_graph.freeze_graph(input_graph_path, input_saver="",
+                          input_binary=False, input_checkpoint=checkpoint_path,
+                          output_node_names="y_", restore_op_name="save/restore_all",
+                          filename_tensor_name="save/Const:0",
+                          output_graph=output_frozen_graph_name, clear_devices=True, initializer_nodes="")
+
+'''
 freeze_graph.freeze_graph(input_graph = "../rnn_model.pbtxt",  input_saver = "",
              input_binary = False, input_checkpoint = "../rnn_model.ckpt", output_node_names = "Y",
              restore_op_name = "save/restore_all", filename_tensor_name = "save/Const:0",
              output_graph = "frozen_har.pb", clear_devices = True, initializer_nodes = "")
-
+'''
 
 #"frozen_har.pb".encode('utf-8')
 #---------------------------------------------

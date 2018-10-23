@@ -1,6 +1,5 @@
+'''
 import MySQLdb
-import pymysql
-
 """
 db=MySQLdb.connect("localhost", "root", "123456", "testdb")
 cursor=db.cursor()
@@ -12,7 +11,7 @@ print("Database version : %s" %(data))
 db.close()
 """
 
-import pymysql
+#import pymysql
 
 # MySQL Connection 연결
 conn = pymysql.connect(host='localhost', user='root', password='123456',
@@ -30,4 +29,4 @@ rows = curs.fetchall()
 print(rows)  # 전체 rows
 
 # Connection 닫기
-conn.close()
+conn.close()'''

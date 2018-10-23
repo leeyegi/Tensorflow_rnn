@@ -25,6 +25,10 @@ dataset= overlap_splite6_update.getmany([['dataset/2018_5_4_13_32_6g.txt', 'data
                                          ['dataset/2018_5_14_21_6_23g.txt', 'dataset/2018_5_14_21_6_23a.txt', 'dataset/2018_5_14_21_6_23tg_16.txt']
                                          ])
 
+#print(dataset)
+#print(dataset.__len__())
+
+
 #result - class와 학습할 데이터 값이 같이 들어있는 리스트
 #       - > x(학습할 데이터) 와 y(클래스) 를 분리
 def seperate_x_y_data(dataset_idx):
@@ -267,8 +271,8 @@ accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 acc_final, loss_final = sess.run([accuracy, cost], feed_dict={X: dataset6_x, Y: dataset6_y_onehot})
 
 #saver.save(sess, "./rnn_model.ckpt")
-tf.train.write_graph(sess.graph_def, '.', '../rnn_model.pbtxt')
-saver.save(sess,save_path = "../rnn_model.ckpt")
+tf.train.write_graph(sess.graph_def, '.', '../rnn_model_check.pbtxt')
+saver.save(sess,save_path = "../rnn_model_check.ckpt")
 
 
 print ("Cross-validation result: %s" % result)
