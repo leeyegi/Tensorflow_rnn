@@ -9,6 +9,8 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from rnn_v2 import data_preprocessing
 import pandas as pd
+import pickle
+
 
 #데이터 처리를 위해 필요한 인스턴스
 N_TIME_STEPS = 50
@@ -17,26 +19,14 @@ step = 25
 RANDOM_SEED = 42
 segments = []
 labels = []
-file_name=['dataset_v2/HJH_2018_10_03_3_log.txt']
+file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt',
+           'dataset_v2/HJH_2018_10_05_2_log.txt','dataset_v2/HJH_2018_10_06_3_log.txt',
+           'dataset_v2/HJH_2018_10_12_3_log.txt','dataset_v2/HJH_2018_10_13_1_log.txt',
+           'dataset_v2/HJH_2018_10_15_3_log.txt','dataset_v2/HJH_2018_10_16_1_log.txt',
+           'dataset_v2/HJH_2018_10_17_3_log.txt','dataset_v2/HJH_2018_10_22_3_log.txt',
+           'dataset_v2/HJH_2018_10_24_3_log.txt']
 
+#데이터 파일을 한번에 받은 후 데이터 pandas로 dataframe형태로 generation
+#class_num도 붙여줌
 get_df_data = data_preprocessing.get_data(file_name)
-
-segments, labels = data_preprocessing.data_shape(get_df_data)
-
-reshaped_segments = np.array(segments).reshape(-1, N_TIME_STEPS, N_FEATURES)
-
-labels = np.array(pd.get_dummies(labels),dtype=np.int8)
-
-'''
-print(reshaped_segments)
-print(reshaped_segments.shape)
-print(labels)
-print(labels.shape)
-'''
-
-X_train, X_test, y_train, y_test = train_test_split(
-        reshaped_segments, labels, test_size=0.2, random_state=RANDOM_SEED)
-
-
-
 

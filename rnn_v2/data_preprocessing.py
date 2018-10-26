@@ -16,7 +16,14 @@ from sklearn.model_selection import train_test_split
 
 #불러올 파일 이름
 #태그파일이 아니라 로그파일만 불러와도 됨
-file_name=['dataset_v2/HJH_2018_10_03_3_log.txt']
+
+file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt',
+           'dataset_v2/HJH_2018_10_05_2_log.txt','dataset_v2/HJH_2018_10_06_3_log.txt',
+           'dataset_v2/HJH_2018_10_12_3_log.txt','dataset_v2/HJH_2018_10_13_1_log.txt']
+
+
+#file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
+
 
 #data frame의 index들
 columns_data = ['num', 'ax', 'ay', 'az', 'gx', 'gy', 'gz', 'class_num']
@@ -32,12 +39,12 @@ def get_data(file_name):
     df_data = pd.concat(df_from_each_file, ignore_index=True)
 
     #df_tag = pd.read_csv(file_name[i]+"tag.txt" ,sep=" ", header=None, names=columns_tag)
-    # print(df_data)
+    print(df_data)
     #print(df_tag)
 
     class_num=0         #정답 레이블-> 순서대로 달리므로 현재는 tag필요없음
     len,_=df_data.shape #dataframe의 shpae
-    #print("len"+str(len))
+    print("len"+str(len))
 
     #dataframe의 행수만큼 반복
     for j in range(0, len):
@@ -45,9 +52,14 @@ def get_data(file_name):
             class_num+=1
             if(class_num==17):
                 class_num=1
+                print("convert"+str(class_num))
+            print("check"+str(class_num))
         df_data.loc[j,'class_num'] = class_num      #dataframe의 label에 정답레이블 달아줌
+        df_data.loc[j] = df_data.loc[j].apply(pd.to_numeric, errors='coerce', )
+    df_data=df_data.fillna(0)
 
-    #print(df_data)
+
+    print(df_data)
     #print(df_tag)
 
     return df_data
@@ -58,6 +70,7 @@ def get_data(file_name):
 def plot_activity(label, df):
     len,_ = df.shape    #데이터의 shape
     data = []
+    print("len"+str(len))
 
     #overlap하는 부분
     for i in range(0,len-50,25):
@@ -86,6 +99,7 @@ def data_shape(df):
 
     len,_ = df.shape    #데이터의 shape
     label_index=1
+    print("len"+str(len))
 
     #데이터를 받아와 50개씩 잘라 저장 overlap 50%
     for i in range(0, len - 50, 25):
@@ -102,8 +116,13 @@ def data_shape(df):
             labels.append(label)
 
         #50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
-        if df.loc[i, 'class_num'] == label_index and df.loc[i + 50, 'class_num'] == label_index+1 and df.loc[i+25, 'class_num'] == label_index+1:  # 50개의 6새센서 데이터가 한 세트
+        if df.loc[i, 'class_num'] == label_index and \
+                df.loc[i + 50, 'class_num'] != label_index and \
+                df.loc[i+25, 'class_num'] != label_index and\
+                df.loc[i + 50, 'class_num']==df.loc[i + 25, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
             label_index=df.loc[i + 25, 'class_num']
+            print(label_index)
+
             #i=i+25
             #print(label_index)
 
@@ -115,19 +134,32 @@ def data_shape(df):
 
 if __name__ == "__main__":
     get_df_data=get_data(file_name)
-    #print(get_df_data)
+    #print(get_df_data)'''
     '''
     for i in range(1,17):
-        get_split_data=plot_activity(i, get_df_data)'''
+        get_split_data=plot_activity(i, get_df_data)
+    '''
+
     #for i in range(1,17):
     segments, labels = data_shape(get_df_data)
 
-
-    reshaped_segments = np.array(segments).reshape(-1, N_TIME_STEPS, N_FEATURES)
+    reshaped_segments = np.array(segments, dtype=np.int32).reshape(-1, N_TIME_STEPS, N_FEATURES)
     #dim_1, dim_2, dim_3=reshaped_segments.shape
 
     labels = np.array(pd.get_dummies(labels),dtype=np.int8)
     #reshaped_segments = reshaped_segments.astype(np.int32)
     #labels = labels.astype(np.int32)
-    print(segments)
-    print(labels[0])
+    print(reshaped_segments.shape)
+    print(labels.shape)
+
+    get_df_data.to_csv("../get_df_data.txt")
+
+    '''
+    reshaped_segments_txt=pd.DataFrame(reshaped_segments)
+    labels_txt=pd.DataFrame(labels)
+    reshaped_segments_txt.to_csv("../reshaped_segments_txt.txt")
+    labels_txt.to_csv("../labels_txt.txt")
+    '''
+    #pickle.dump(reshaped_segments, open("../reshaped_segments.txt", "wb",encoding='utf-8'))
+    #pickle.dump(labels, open("../labels.txt", "wb", encoding='utf-8'))
+    #np.savetxt("../labels.txt", labels, delimiter=' ')
