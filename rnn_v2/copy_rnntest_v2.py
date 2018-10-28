@@ -26,32 +26,37 @@ file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_l
            'dataset_v2/HJH_2018_10_17_3_log.txt','dataset_v2/HJH_2018_10_22_3_log.txt',
            'dataset_v2/HJH_2018_10_24_3_log.txt']
 
-
+#데이터 파일을 한번에 받은 후 데이터 pandas로 dataframe형태로 generation
+#class_num도 붙여줌
 get_df_data = data_preprocessing.get_data(file_name)
 
-reshaped_segments, reshaped_labels=data_preprocessing.data_shape(get_df_data)
+#dataframe을 받아서 훈련에 필요한 데이터 shape을 맞춰줌
+segments, labels = data_preprocessing.data_shape(get_df_data)
 
+reshaped_segments = np.array(segments).reshape(-1, N_TIME_STEPS, N_FEATURES)
 
+labels = np.array(pd.get_dummies(labels),dtype=np.int8)
+
+'''
 print(reshaped_segments)
 print(reshaped_segments.shape)
-print(reshaped_labels)
-print(reshaped_labels.shape)
-
+print(labels)
+print(labels.shape)
+'''
 #데이터를 랜덤으로 섞어 훈련데이터와 테스트 데이터 setting함
-x_train, x_test, y_train, y_test = train_test_split(reshaped_segments, reshaped_labels, test_size=0.2, random_state=RANDOM_SEED)
+x_train, x_test, y_train, y_test = train_test_split(reshaped_segments, labels, test_size=0.2, random_state=RANDOM_SEED)
 
 print("data shape")
 print(x_train.shape)
 print(x_test.shape)
-
 
 #lstm모델을 만들기 위한 인스턴스
 N_CLASSES = 16
 N_HIDDEN_UNITS = 64
 
 #lstm모델 만들기
-
 def create_LSTM_model(inputs):
+    '''
     W = {
         'hidden': tf.Variable(tf.random_normal([N_FEATURES, N_HIDDEN_UNITS])),
         'output': tf.Variable(tf.random_normal([N_HIDDEN_UNITS, N_CLASSES]))
@@ -59,23 +64,35 @@ def create_LSTM_model(inputs):
     biases = {
         'hidden': tf.Variable(tf.random_normal([N_HIDDEN_UNITS], mean=1.0)),
         'output': tf.Variable(tf.random_normal([N_CLASSES]))
-    }
+    }'''
+
+    W = tf.Variable(tf.random_normal([N_HIDDEN_UNITS, N_CLASSES]))
+    b = tf.Variable(tf.random_normal([N_CLASSES]))
 
     X = tf.transpose(inputs, [1, 0, 2])
     X = tf.reshape(X, [-1, N_FEATURES])
-    hidden = tf.nn.relu(tf.matmul(X, W['hidden']) + biases['hidden'])
+    hidden = tf.nn.relu(tf.matmul(X, W['hidden']) + b['hidden'])
     hidden = tf.split(hidden, N_TIME_STEPS, 0)
 
-    # Stack 2 LSTM layers
-    lstm_layers = [tf.contrib.rnn.BasicLSTMCell(N_HIDDEN_UNITS, forget_bias=1.0) for _ in range(2)]
-    lstm_layers = tf.contrib.rnn.MultiRNNCell(lstm_layers)
+    # Stack 3 LSTM layers
+    #lstm_layers = [tf.contrib.rnn.BasicLSTMCell(N_HIDDEN_UNITS, forget_bias=1.0) for _ in range(3)]
+    #lstm_layers = tf.contrib.rnn.MultiRNNCell(lstm_layers)
 
-    outputs, _ = tf.contrib.rnn.static_rnn(lstm_layers, hidden, dtype=tf.float32)
+    cell1 = tf.nn.rnn_cell.BasicLSTMCell(N_HIDDEN_UNITS)
+    cell2 = tf.nn.rnn_cell.BasicLSTMCell(N_HIDDEN_UNITS)
+    cell2 = tf.nn.rnn_cell.DropoutWrapper(cell2, output_keep_prob=0.8)
+    cell3 = tf.nn.rnn_cell.BasicLSTMCell(N_HIDDEN_UNITS)
+    cell3 = tf.nn.rnn_cell.DropoutWrapper(cell3, output_keep_prob=0.7)
+
+    multi_cell = tf.nn.rnn_cell.MultiRNNCell([cell1, cell2, cell3])
+
+    #outputs, states = tf.contrib.rnn.static_rnn(multi_cell, hidden, dtype=tf.float32)
+    outputs, states = tf.nn.dynamic_rnn(multi_cell, X, dtype=tf.float32)
 
     # Get output for the last time step
     lstm_last_output = outputs[-1]
 
-    return tf.matmul(lstm_last_output, W['output']) + biases['output']
+    return tf.matmul(lstm_last_output, W['output']) + b['output']
 
 
 tf.reset_default_graph()
@@ -89,26 +106,23 @@ pred_Y = create_LSTM_model(X)
 
 pred_softmax = tf.nn.softmax(pred_Y, name="y_")
 
+#L2_LOSS = 0.01
 
-L2_LOSS = 0.0015
-
-l2 = L2_LOSS *     sum(tf.nn.l2_loss(tf_var) for tf_var in tf.trainable_variables())
-
-loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = pred_Y, labels = Y)) + l2
-
+#l2 = L2_LOSS *     sum(tf.nn.l2_loss(tf_var) for tf_var in tf.trainable_variables())
+cost_pre=tf.nn.softmax_cross_entropy_with_logits_v2(logits=pred_softmax, labels=Y)
+loss = tf.reduce_mean(cost_pre)
 
 
-LEARNING_RATE = 0.005
+LEARNING_RATE = 0.01
 
-optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(loss)
+optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(loss, global_step=global_step)
 
 correct_pred = tf.equal(tf.argmax(pred_softmax, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, dtype=tf.float32))
 
 
-
 N_EPOCHS = 1000
-BATCH_SIZE = 1024
+BATCH_SIZE = 512
 
 saver = tf.train.Saver()
 
@@ -117,11 +131,15 @@ history = dict(train_loss=[],
                test_loss=[],
                test_acc=[])
 
-sess = tf.InteractiveSession()
+sess = tf.Session()
+#sess = tf.InteractiveSession()
 sess.run(tf.global_variables_initializer())
+summary_op = tf.summary.merge_all()
+summary_writer = tf.summary.FileWriter("rnn_v2_16/",graph_def=sess.graph_def)
 
 train_count = len(x_train)
 
+#학습 시작
 for i in range(1, N_EPOCHS + 1):
     for start, end in zip(range(0, train_count, BATCH_SIZE),
                           range(BATCH_SIZE, train_count + 1, BATCH_SIZE)):
@@ -144,11 +162,11 @@ for i in range(1, N_EPOCHS + 1):
 
     print(f'epoch: {i} test accuracy: {acc_test} loss: {loss_test}')
 
+#학습 종료 후 파라미터 저장 및 체크포인트 저장
 predictions, acc_final, loss_final = sess.run([pred_softmax, accuracy, loss], feed_dict={X: x_test, Y: y_test})
 
 print()
 print(f'final results: accuracy: {acc_final} loss: {loss_final}')
-
 
 
 pickle.dump(predictions, open("predictions.p", "wb"))
@@ -186,6 +204,3 @@ plt.title("Confusion matrix")
 plt.ylabel('True label')
 plt.xlabel('Predicted label')
 plt.show()
-
-
-

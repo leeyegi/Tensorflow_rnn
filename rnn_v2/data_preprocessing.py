@@ -17,9 +17,7 @@ from sklearn.model_selection import train_test_split
 #불러올 파일 이름
 #태그파일이 아니라 로그파일만 불러와도 됨
 
-file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt',
-           'dataset_v2/HJH_2018_10_05_2_log.txt','dataset_v2/HJH_2018_10_06_3_log.txt',
-           'dataset_v2/HJH_2018_10_12_3_log.txt','dataset_v2/HJH_2018_10_13_1_log.txt']
+file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
 
 
 #file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
@@ -53,7 +51,7 @@ def get_data(file_name):
             if(class_num==17):
                 class_num=1
                 print("convert"+str(class_num))
-            print("check"+str(class_num))
+            print("check"+str(class_num), end= " ")
         df_data.loc[j,'class_num'] = class_num      #dataframe의 label에 정답레이블 달아줌
         df_data.loc[j] = df_data.loc[j].apply(pd.to_numeric, errors='coerce', )
     df_data=df_data.fillna(0)
@@ -125,11 +123,15 @@ def data_shape(df):
 
             #i=i+25
             #print(label_index)
+    reshaped_segments = np.array(segments, dtype=np.int32).reshape(-1, N_FEATURES, N_TIME_STEPS)
+    reshaped_segments=np.transpose(reshaped_segments, (0,2,1))
+    reshaped_labels = np.array(pd.get_dummies(labels),dtype=np.int8)
 
     #print(segments)
     #print(np.array(segments).shape)
     #print(labels)
-    return segments, labels
+    #return segments, labels
+    return reshaped_segments, reshaped_labels
 
 
 if __name__ == "__main__":
@@ -140,26 +142,22 @@ if __name__ == "__main__":
         get_split_data=plot_activity(i, get_df_data)
     '''
 
-    #for i in range(1,17):
-    segments, labels = data_shape(get_df_data)
+    reshaped_segments,reshaped_labels=data_shape(get_df_data)
 
-    reshaped_segments = np.array(segments, dtype=np.int32).reshape(-1, N_TIME_STEPS, N_FEATURES)
-    #dim_1, dim_2, dim_3=reshaped_segments.shape
-
-    labels = np.array(pd.get_dummies(labels),dtype=np.int8)
-    #reshaped_segments = reshaped_segments.astype(np.int32)
-    #labels = labels.astype(np.int32)
+    print(reshaped_segments)
     print(reshaped_segments.shape)
-    print(labels.shape)
+    print(reshaped_labels)
+    print(reshaped_labels.shape)
 
-    get_df_data.to_csv("../get_df_data.txt")
+    #get_df_data.to_csv("../get_df_data.txt")
 
     '''
     reshaped_segments_txt=pd.DataFrame(reshaped_segments)
     labels_txt=pd.DataFrame(labels)
     reshaped_segments_txt.to_csv("../reshaped_segments_txt.txt")
     labels_txt.to_csv("../labels_txt.txt")
+    
+    pickle.dump(reshaped_segments, open("../reshaped_segments.txt", "wb",encoding='utf-8'))
+    pickle.dump(labels, open("../labels.txt", "wb", encoding='utf-8'))
+    np.savetxt("../labels.txt", labels, delimiter=' ')
     '''
-    #pickle.dump(reshaped_segments, open("../reshaped_segments.txt", "wb",encoding='utf-8'))
-    #pickle.dump(labels, open("../labels.txt", "wb", encoding='utf-8'))
-    #np.savetxt("../labels.txt", labels, delimiter=' ')
