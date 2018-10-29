@@ -308,7 +308,7 @@ with tf.variable_scope("rnn_model_50hz_16"):
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.show()
-    saver.save(sess, "rnn_model_50hz_16/model-checkpoint", global_step=global_step)
+    saver.save(sess, "rnn_model_50hz_16/model-checkpoint_har", global_step=global_step)
     saver.save(sess, "./rnn_model.ckpt")
 
 

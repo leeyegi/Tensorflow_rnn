@@ -1,2 +1,0 @@
-model_checkpoint_path: "rnn_v2_model_check.ckpt"
-all_model_checkpoint_paths: "rnn_v2_model_check.ckpt"

@@ -124,7 +124,8 @@ n_class = 17
 # W -> (데이터셋 크기, 17)
 # b -> (17, )
 #########
-X = tf.placeholder(tf.float32, [None, n_input, n_step])
+tf.reset_default_graph()
+X = tf.placeholder(tf.float32, [None, n_input, n_step], name='input')
 Y = tf.placeholder(tf.int32, [None,n_class ])
 W = tf.Variable(tf.random_normal([n_hidden, n_class]))
 b = tf.Variable(tf.random_normal([n_class]))
@@ -173,14 +174,13 @@ sess = tf.Session()
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 summary_op = tf.summary.merge_all()
-summary_writer = tf.summary.FileWriter("rnn_50hz_16/",graph_def=sess.graph_def)
+summary_writer = tf.summary.FileWriter("rnn_50hz_16_old/",graph_def=sess.graph_def)
 #print(len([n.name for n in tf.get_default_graph().as_graph_def().node]))
 #print([n.name for n in tf.get_default_graph().as_graph_def().node])
 #print(tf.get_default_graph().as_graph_def().node)
 #print(tf.get_default_graph().as_graph_def())
 
-
-
+tf.train.write_graph(sess.graph_def, '.', 'rnn.pbtxt')
 
 #########
 # 신경망 모델 학습
@@ -219,7 +219,7 @@ def run_train(session, train_x, train_y):
         acc_list.append(acc_train_result)
         cost_list.append(cost_train_result)
 
-        #saver.save(sess, "rnn_50hz_16/model-checkpoint", global_step=global_step)
+        #saver.save(sess, "rnn_50hz_16_old/model-checkpoint_har", global_step=global_step)
         #saver.save(sess, "/tmp/", "saved_checkpoint", "checkpoint_state", "input_graph.pb", "output_graph.pb", global_step=global_step)
         #saver.save(sess, "/tmp/", "saved_checkpoint", "checkpoint_state", "input_graph.pb", "output_graph.pb")
 
@@ -271,7 +271,7 @@ accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 acc_final, loss_final = sess.run([accuracy, cost], feed_dict={X: dataset6_x, Y: dataset6_y_onehot})
 
 #saver.save(sess, "./rnn_model.ckpt")
-tf.train.write_graph(sess.graph_def, '.', '../rnn_model_check.pbtxt')
+#tf.train.write_graph(sess.graph_def, '.', '../rnn_model_check.pbtxt')
 saver.save(sess,save_path = "../rnn_model_check.ckpt")
 
 

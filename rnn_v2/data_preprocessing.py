@@ -51,7 +51,7 @@ def get_data(file_name):
             if(class_num==17):
                 class_num=1
                 print("convert"+str(class_num))
-            print("check"+str(class_num), end= " ")
+            print("check"+str(class_num))
         df_data.loc[j,'class_num'] = class_num      #dataframe의 label에 정답레이블 달아줌
         df_data.loc[j] = df_data.loc[j].apply(pd.to_numeric, errors='coerce', )
     df_data=df_data.fillna(0)
@@ -119,13 +119,13 @@ def data_shape(df):
                 df.loc[i+25, 'class_num'] != label_index and\
                 df.loc[i + 50, 'class_num']==df.loc[i + 25, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
             label_index=df.loc[i + 25, 'class_num']
-            print(label_index)
+            #print(label_index)
 
             #i=i+25
             #print(label_index)
-    reshaped_segments = np.array(segments, dtype=np.int32).reshape(-1, N_FEATURES, N_TIME_STEPS)
+    reshaped_segments = np.array(segments, dtype=np.float32).reshape(-1, N_FEATURES, N_TIME_STEPS)
     reshaped_segments=np.transpose(reshaped_segments, (0,2,1))
-    reshaped_labels = np.array(pd.get_dummies(labels),dtype=np.int8)
+    reshaped_labels = np.array(pd.get_dummies(labels),dtype=np.float32)
 
     #print(segments)
     #print(np.array(segments).shape)

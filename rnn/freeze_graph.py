@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-r"""Converts checkpoint variables into Const ops in a standalone GraphDef file.
+r"""Converts checkpoint_har variables into Const ops in a standalone GraphDef file.
 This script is designed to take a GraphDef proto, a SaverDef proto, and a set of
-variable values stored in a checkpoint file, and output a GraphDef with all of
+variable values stored in a checkpoint_har file, and output a GraphDef with all of
 the variable ops converted into const ops containing the values of the
 variables.
 It's useful to do this when we need to load a single file in C++, especially in
@@ -66,13 +66,13 @@ def freeze_graph_with_def_protos(input_graph_def,
                                  input_saved_model_dir=None,
                                  saved_model_tags=None,
                                  checkpoint_version=saver_pb2.SaverDef.V2):
-  """Converts all variables in a graph and checkpoint into constants."""
+  """Converts all variables in a graph and checkpoint_har into constants."""
   del restore_op_name, filename_tensor_name  # Unused by updated loading code.
 
   # 'input_checkpoint' may be a prefix if we're using Saver V2 format
   if (not input_saved_model_dir and
       not saver_lib.checkpoint_exists(input_checkpoint)):
-    print("Input checkpoint '" + input_checkpoint + "' doesn't exist!")
+    print("Input checkpoint_har '" + input_checkpoint + "' doesn't exist!")
     return -1
 
   if not output_node_names:
@@ -216,7 +216,7 @@ def freeze_graph(input_graph,
                  input_saved_model_dir=None,
                  saved_model_tags=tag_constants.SERVING,
                  checkpoint_version=saver_pb2.SaverDef.V2):
-  """Converts all variables in a graph and checkpoint into constants."""
+  """Converts all variables in a graph and checkpoint_har into constants."""
   input_graph_def = None
   if input_saved_model_dir:
     input_graph_def = saved_model_utils.get_meta_graph_def(
@@ -254,7 +254,7 @@ def main(unused_args, flags):
   elif flags.checkpoint_version == 2:
     checkpoint_version = saver_pb2.SaverDef.V2
   else:
-    print("Invalid checkpoint version (must be '1' or '2'): %d" %
+    print("Invalid checkpoint_har version (must be '1' or '2'): %d" %
           flags.checkpoint_version)
     return -1
   freeze_graph(flags.input_graph, flags.input_saver, flags.input_binary,

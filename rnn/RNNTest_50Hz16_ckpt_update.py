@@ -175,7 +175,7 @@ init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 sess=tf.InteractiveSession()
 summary_op = tf.summary.merge_all()
-summary_writer = tf.summary.FileWriter("rnn_50hz_16/",graph_def=sess.graph_def)
+summary_writer = tf.summary.FileWriter("rnn_50hz_16_old/",graph_def=sess.graph_def)
 #print(len([n.name for n in tf.get_default_graph().as_graph_def().node]))
 #print([n.name for n in tf.get_default_graph().as_graph_def().node])
 #print(tf.get_default_graph().as_graph_def().node)
@@ -221,7 +221,7 @@ def run_train(session, train_x, train_y):
         acc_list.append(acc_train_result)
         cost_list.append(cost_train_result)
 
-        #saver.save(sess, "rnn_50hz_16/model-checkpoint", global_step=global_step)
+        #saver.save(sess, "rnn_50hz_16_old/model-checkpoint_har", global_step=global_step)
         #saver.save(sess, "/tmp/", "saved_checkpoint", "checkpoint_state", "input_graph.pb", "output_graph.pb", global_step=global_step)
         #saver.save(sess, "/tmp/", "saved_checkpoint", "checkpoint_state", "input_graph.pb", "output_graph.pb")
 
