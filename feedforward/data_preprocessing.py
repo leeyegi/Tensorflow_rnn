@@ -124,7 +124,7 @@ def data_shape(df):
             #i=i+25
             #print(label_index)
     reshaped_segments = np.array(segments, dtype=np.float32).reshape(-1, N_FEATURES, N_TIME_STEPS)
-    reshaped_segments=np.transpose(reshaped_segments, (0,2,1))
+    #reshaped_segments=np.transpose(reshaped_segments, (0,2,1))
     reshaped_labels = np.array(pd.get_dummies(labels),dtype=np.float32)
 
     #print(segments)
