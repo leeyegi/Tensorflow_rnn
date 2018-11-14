@@ -14,14 +14,14 @@ from rnn import overlap_splite6_update
 #02.t.txt - 태깅이 되어있는 파일
 #02.a.txt - 가속도값이 저장되어있는 파일
 #02.g.txt - 자이로값이 저장되어있는 파일
-dataset= overlap_splite6_update.getmany([['dataset/2018_5_4_13_32_6g.txt', 'dataset/2018_5_4_13_32_6a.txt', 'dataset/2018_5_4_13_32_6tg_16.txt'],
-                                         ['dataset/2018_5_4_13_46_47g.txt', 'dataset/2018_5_4_13_46_47a.txt', 'dataset/2018_5_4_13_46_47tg_16.txt'],
-                                         ['dataset/2018_5_4_22_31_51g.txt', 'dataset/2018_5_4_22_31_51a.txt', 'dataset/2018_5_4_22_31_51tg_16.txt'],
-                                         ['dataset/2018_5_8_20_28_25g.txt', 'dataset/2018_5_8_20_28_25a.txt','dataset/2018_5_8_20_28_25tg_16.txt'],
-                                         ['dataset/2018_5_8_20_42_14g.txt', 'dataset/2018_5_8_20_42_14a.txt','dataset/2018_5_8_20_42_14tg_16.txt'],
-                                         ['dataset/2018_5_8_20_58_21g.txt', 'dataset/2018_5_8_20_58_21a.txt','dataset/2018_5_8_20_58_21tg_16.txt'],
+dataset= overlap_splite6_update.getmany([#['dataset/2018_5_4_13_32_6g.txt', 'dataset/2018_5_4_13_32_6a.txt', 'dataset/2018_5_4_13_32_6tg_16.txt'],
+                                         #['dataset/2018_5_4_13_46_47g.txt', 'dataset/2018_5_4_13_46_47a.txt', 'dataset/2018_5_4_13_46_47tg_16.txt'],
+                                         #['dataset/2018_5_4_22_31_51g.txt', 'dataset/2018_5_4_22_31_51a.txt', 'dataset/2018_5_4_22_31_51tg_16.txt'],
+                                         #['dataset/2018_5_8_20_28_25g.txt', 'dataset/2018_5_8_20_28_25a.txt','dataset/2018_5_8_20_28_25tg_16.txt'],
+                                         #['dataset/2018_5_8_20_42_14g.txt', 'dataset/2018_5_8_20_42_14a.txt','dataset/2018_5_8_20_42_14tg_16.txt'],
+                                         #['dataset/2018_5_8_20_58_21g.txt', 'dataset/2018_5_8_20_58_21a.txt','dataset/2018_5_8_20_58_21tg_16.txt'],
 
-                                         ['dataset/2018_5_14_20_41_36g.txt', 'dataset/2018_5_14_20_41_36a.txt', 'dataset/2018_5_14_20_41_36tg_16.txt'],
+                                         #['dataset/2018_5_14_20_41_36g.txt', 'dataset/2018_5_14_20_41_36a.txt', 'dataset/2018_5_14_20_41_36tg_16.txt'],
                                          ['dataset/2018_5_14_21_6_23g.txt', 'dataset/2018_5_14_21_6_23a.txt', 'dataset/2018_5_14_21_6_23tg_16.txt']
                                          ])
 
@@ -353,6 +353,16 @@ LABELS=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14
 confusion_matrix = metrics.confusion_matrix(onehot_to_label, best[0])
 '''print(confusion_matrix)'''
 cm = confusion_matrix.astype('float') / confusion_matrix.sum(axis=1)[:, np.newaxis]
+
+print("cm")
+print(onehot_to_label)
+print(onehot_to_label.shape)
+print(best[0])
+print(best[0].__len__)
+#print(best.shape)
+print(cm)
+print(cm.shape)
+
 
 plt.figure(figsize=(16, 16))
 sns.heatmap(cm, xticklabels=LABELS, yticklabels=LABELS, annot=True, fmt=".2f")

@@ -19,12 +19,12 @@ step = 25
 RANDOM_SEED = 42
 segments = []
 labels = []
-file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt',
-           'dataset_v2/HJH_2018_10_05_2_log.txt','dataset_v2/HJH_2018_10_06_3_log.txt',
-           'dataset_v2/HJH_2018_10_12_3_log.txt','dataset_v2/HJH_2018_10_13_1_log.txt',
-           'dataset_v2/HJH_2018_10_15_3_log.txt','dataset_v2/HJH_2018_10_16_1_log.txt',
-           'dataset_v2/HJH_2018_10_17_3_log.txt','dataset_v2/HJH_2018_10_22_3_log.txt',
-           'dataset_v2/HJH_2018_10_24_3_log.txt']
+file_name=[#'../dataset_v2/HJH_2018_10_03_3_log.txt', '../dataset_v2/HJH_2018_10_04_3_log.txt',
+           #'../dataset_v2/HJH_2018_10_05_2_log.txt','../dataset_v2/HJH_2018_10_06_3_log.txt',
+           #'../dataset_v2/HJH_2018_10_12_3_log.txt','../dataset_v2/HJH_2018_10_13_1_log.txt',
+           #'../dataset_v2/HJH_2018_10_15_3_log.txt','../dataset_v2/HJH_2018_10_16_1_log.txt',
+           #'../dataset_v2/HJH_2018_10_17_3_log.txt','../dataset_v2/HJH_2018_10_22_3_log.txt',
+           '../dataset_v2/HJH_2018_10_24_3_log.txt']
 
 #데이터 파일을 한번에 받은 후 데이터 pandas로 dataframe형태로 generation
 #class_num도 붙여줌
@@ -192,6 +192,8 @@ plt.xlabel('Training Epoch')
 plt.ylim(0)
 
 plt.show()
+print(predictions.__class__)
+print(predictions.shape)
 
 LABELS = ['1', '2', '3', '4', '5', '6','7', '8', '9', '10', '11', '12','13', '14', '15', '16']
 max_test = np.argmax(y_test, axis=1)

@@ -3,16 +3,16 @@ import tensorflow as tf
 from tensorflow.python.tools import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
 
-MODEL_NAME = 'model'
+MODEL_NAME = 'rnnraw'
 
 # Freeze the graph
 
 
-input_graph_path = 'test/' + MODEL_NAME+'.pbtxt'
-checkpoint_path = './test/' +MODEL_NAME+'.ckpt'
+input_graph_path = '../rnnraw_datasetall_85_lr00001_e3000_relu1/' + MODEL_NAME+'.pbtxt'
+checkpoint_path = '../rnnraw_datasetall_85_lr00001_e3000_relu1/' +MODEL_NAME+'.ckpt'
 input_saver_def_path = ""
 input_binary = False
-output_node_names = "output"
+output_node_names = "out_"
 restore_op_name = "save/restore_all"
 filename_tensor_name = "save/Const:0"
 output_frozen_graph_name = 'frozen_'+MODEL_NAME+'.pb'
@@ -36,8 +36,8 @@ with tf.gfile.Open(output_frozen_graph_name, "rb") as f:
 
 output_graph_def = optimize_for_inference_lib.optimize_for_inference(
         input_graph_def,
-        ["input_tensor"], # an array of the input node(s)
-        ["output"], # an array of output nodes
+        ["in_"], # an array of the input node(s)
+        ["out_"], # an array of output nodes
         tf.float32.as_datatype_enum)
 
 # Save the optimized graph

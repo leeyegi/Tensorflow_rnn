@@ -1,4 +1,3 @@
-import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import metrics
@@ -6,6 +5,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from rnn_v2 import data_preprocessing
 import pickle
+import tensorflow as tf
 
 #tflite를 만들기위한 nn
 #input -> in_
@@ -26,7 +26,6 @@ file_name=['../dataset_v2/HJH_2018_10_03_3_log.txt', '../dataset_v2/HJH_2018_10_
 
 
 get_df_data = data_preprocessing.get_data(file_name)
-
 reshaped_segments, reshaped_labels=data_preprocessing.data_shape(get_df_data)
 
 reshaped_segments_2=reshaped_segments.reshape(reshaped_segments.shape[0], 300)
@@ -38,9 +37,9 @@ print(reshaped_segments_2)
 x_train, x_test, y_train, y_test = train_test_split(reshaped_segments_2, reshaped_labels, test_size=0.2, random_state=RANDOM_SEED)
 
 # hyperparameters
-learning_rate = 0.01
-training_epochs = 500
-batch_size = 1000
+learning_rate = 0.0025
+training_epochs = 10000
+batch_size = 500
 display_step = 1
 
 # 네트워크 구성하기위한 hyperparameter
@@ -51,7 +50,7 @@ n_timp_step=6
 n_classes = 16
 
 #reset graph
-tf.reset_default_graph()
+#tf.reset_default_graph()
 
 # tf Graph input
 X = tf.placeholder("float", [None, n_timp_step*n_feature], name='in_')
@@ -94,7 +93,6 @@ correct_pred = tf.equal(tf.argmax(pred_softmax, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, dtype=tf.float32))
 
 # Initializing the variables
-init = tf.global_variables_initializer()
 
 saver = tf.train.Saver()
 init_op = tf.global_variables_initializer()

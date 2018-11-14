@@ -24,7 +24,7 @@ file_name=[#'dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_
            #'dataset_v2/HJH_2018_10_12_3_log.txt','dataset_v2/HJH_2018_10_13_1_log.txt',
            #'dataset_v2/HJH_2018_10_15_3_log.txt','dataset_v2/HJH_2018_10_16_1_log.txt',
            #'dataset_v2/HJH_2018_10_17_3_log.txt','dataset_v2/HJH_2018_10_22_3_log.txt',
-           'dataset_v2/HJH_2018_10_24_3_log.txt']
+           '../dataset_v2/HJH_2018_10_24_3_log.txt']
 
 
 get_df_data = data_preprocessing.get_data(file_name)
@@ -189,3 +189,5 @@ plt.show()
 
 
 
+print(predictions.__class__)
+print(predictions.shape)

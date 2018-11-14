@@ -13,6 +13,8 @@ import seaborn as sns
 from pylab import rcParams
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
+import random
+
 
 #불러올 파일 이름
 #태그파일이 아니라 로그파일만 불러와도 됨
@@ -100,7 +102,7 @@ def data_shape(df):
     print("len"+str(len))
 
     #데이터를 받아와 50개씩 잘라 저장 overlap 50%
-    for i in range(0, len - 50, 25):
+    for i in range(0, len - 50, 10):
         if df.loc[i, 'class_num'] == label_index and df.loc[i + 50, 'class_num'] == label_index:  # 50개의 6새센서 데이터가 한 세트
             ax = df['ax'].values[i: i + N_TIME_STEPS]
             ay = df['ay'].values[i: i + N_TIME_STEPS]
@@ -116,9 +118,9 @@ def data_shape(df):
         #50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
         if df.loc[i, 'class_num'] == label_index and \
                 df.loc[i + 50, 'class_num'] != label_index and \
-                df.loc[i+25, 'class_num'] != label_index and\
-                df.loc[i + 50, 'class_num']==df.loc[i + 25, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
-            label_index=df.loc[i + 25, 'class_num']
+                df.loc[i+10, 'class_num'] != label_index and\
+                df.loc[i + 50, 'class_num']==df.loc[i + 10, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
+            label_index=df.loc[i + 10, 'class_num']
             #print(label_index)
 
             #i=i+25
