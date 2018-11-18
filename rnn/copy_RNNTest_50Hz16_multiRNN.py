@@ -129,7 +129,7 @@ b = tf.Variable(tf.random_normal([n_class]))
 
 # RNN 에 학습에 사용할 셀을 생성
 # BasicRNNCell,BasicLSTMCell,GRUCell
-cell1 = tf.nn.rnn_cell.BasicLSTMCell(n_hidden)
+cell1 = tf.nn.rnn_cell.BasicRNNCell(n_hidden)
 cell2 = tf.nn.rnn_cell.BasicLSTMCell(n_hidden)
 cell2 = tf.nn.rnn_cell.DropoutWrapper(cell2, output_keep_prob=0.8)
 cell3 = tf.nn.rnn_cell.BasicLSTMCell(n_hidden)

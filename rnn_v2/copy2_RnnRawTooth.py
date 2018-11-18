@@ -10,11 +10,11 @@ import seaborn as sns
 import random
 
 
-file_name=['../dataset_v2/HJH_2018_10_03_3_log.txt', '../dataset_v2/HJH_2018_10_04_3_log.txt',
-           '../dataset_v2/HJH_2018_10_05_2_log.txt','../dataset_v2/HJH_2018_10_06_3_log.txt',
-           '../dataset_v2/HJH_2018_10_12_3_log.txt','../dataset_v2/HJH_2018_10_13_1_log.txt',
-           '../dataset_v2/HJH_2018_10_15_3_log.txt','../dataset_v2/HJH_2018_10_16_1_log.txt',      #데이터 조음
-           '../dataset_v2/HJH_2018_10_17_3_log.txt','../dataset_v2/HJH_2018_10_22_3_log.txt',
+file_name=[#'../dataset_v2/HJH_2018_10_03_3_log.txt', '../dataset_v2/HJH_2018_10_04_3_log.txt',
+           #'../dataset_v2/HJH_2018_10_05_2_log.txt','../dataset_v2/HJH_2018_10_06_3_log.txt',
+           #'../dataset_v2/HJH_2018_10_12_3_log.txt','../dataset_v2/HJH_2018_10_13_1_log.txt',
+           #'../dataset_v2/HJH_2018_10_15_3_log.txt','../dataset_v2/HJH_2018_10_16_1_log.txt',      #데이터 조음
+           #'../dataset_v2/HJH_2018_10_17_3_log.txt','../dataset_v2/HJH_2018_10_22_3_log.txt',
            '../dataset_v2/HJH_2018_10_24_3_log.txt'                                                #데이터 조음
             ]
 
@@ -49,9 +49,8 @@ print(nclasses)
 
 
 #hyperparameter
-#b
 batch_size = int(ntrain/4)
-h_size = 40
+h_size = 50
 w_size = 6
 c_size = 1
 hidden_size = 512
@@ -65,11 +64,9 @@ tf.reset_default_graph()
 #placeholder
 X = tf.placeholder(tf.float32, shape=[None, h_size, w_size], name="in_") # [100, 28, 28, 1]
 Y = tf.placeholder(tf.float32, shape=[None, 16])
-init_state = tf.placeholder(tf.float32, shape=[None, hidden_size], name="hidden_")
-print("placeholder")
+
 print(X.shape)
 print(Y.shape)
-print(init_state.shape)
 
 
 #X = tf.transpose(X, [0, 2, 1])
@@ -89,44 +86,28 @@ U3 = tf.Variable(tf.random_normal([hidden_size, hidden_size], stddev=0.01))
 W3 = tf.Variable(tf.random_normal([hidden_size, hidden_size], stddev=0.01)) # always square
 V = tf.Variable(tf.random_normal([hidden_size, 16], stddev=0.01))
 
-print("state shape")
-print(U1.shape)
-print(W1.shape)
-print(U2.shape)
-print(W2.shape)
-print(U3.shape)
-print(W3.shape)
-print(V.shape)
-
-
-batch_size_hidden = tf.shape(init_state)[0]
 
 #hidden state
 s1 = {}
-s1_init = tf.random_normal(shape=[batch_size_hidden,hidden_size], stddev=0.01)
+s1_init = tf.random_normal(shape=[batch_size, hidden_size], stddev=0.01)
 s1[-1] = s1_init
+print(s1_init.shape)
 
 s2 = {}
-s2_init = tf.random_normal(shape=[batch_size_hidden,hidden_size], stddev=0.01)
+s2_init = tf.random_normal(shape=[batch_size, hidden_size], stddev=0.01)
 s2[-1] = s2_init
 
 s3 = {}
-s3_init = tf.random_normal(shape=[batch_size_hidden,hidden_size], stddev=0.01)
+s3_init = tf.random_normal(shape=[batch_size, hidden_size], stddev=0.01)
 s3[-1] = s3_init
 
-print("s init")
-print(s1_init.shape)
-print(s2_init.shape)
-print(s3_init.shape)
-
-print("s")
-print(s1.__sizeof__)
-print(s2.__sizeof__)
-print(s3.__sizeof__)
-
+print("model")
 #model specification
 for t, x_split in enumerate(x_split):
-    x = tf.reshape(x_split, [batch_size_hidden, w_size]) # [100, 1, 28, 1] -> [100, 28]
+    x = tf.reshape(x_split, [batch_size, w_size]) # [100, 1, 28, 1] -> [100, 28]
+    print(x_split.shape)
+    print(x.shape)
+
     s1[t] = tf.nn.relu(tf.matmul(x, U1) + tf.matmul(s1[t-1], W1))
     s2[t] = tf.nn.tanh(tf.matmul(s1[t], U2) + tf.matmul(s1[t-1], W2))
     s3[t] = tf.nn.tanh(tf.matmul(s2[t], U3) + tf.matmul(s2[t-1], W3))
@@ -160,8 +141,8 @@ summary_op = tf.summary.merge_all()
 init = tf.global_variables_initializer()
 
 #validate
-test_inputs = x_test
-test_outputs = y_test
+test_inputs = x_test[:batch_size]
+test_outputs = y_test[:batch_size]
 
 '''
 def accuracy(network, t):
@@ -179,13 +160,13 @@ with tf.Session() as sess:
         for i in range(4):
             batch_x = x_train[i * batch_size:(i + 1) * batch_size]
             batch_y = y_train[i * batch_size:(i + 1) * batch_size]
-            sess.run(optimizer, feed_dict={X: batch_x, Y: batch_y, init_state : np.zeros((batch_x.shape[0], hidden_size))})
+            sess.run(optimizer, feed_dict={X: batch_x, Y: batch_y})
 
             predic_train, acc_train, loss_train = sess.run([pred_softmax, acc, loss], feed_dict={
-                X: batch_x, Y: batch_y, init_state : np.zeros((batch_x.shape[0], hidden_size))})
+                X: batch_x, Y: batch_y})
 
         predic_test, acc_test, loss_test = sess.run([pred_softmax, acc, loss], feed_dict={
-            X: test_inputs, Y: test_outputs, init_state : np.zeros((test_inputs.shape[0], hidden_size))})
+            X: test_inputs, Y: test_outputs})
 
         print(f'epoch: {epoch} batch {i} test accuracy: {acc_test} loss: {loss_test}')
 
@@ -200,7 +181,7 @@ with tf.Session() as sess:
     #                                              feed_dict={X: testimgs, Y: testlabels})
     saver.save(sess, save_path="../rnnraw.ckpt")
     prediction, acc, loss = sess.run([pred_softmax, acc, loss], feed_dict={
-        X: test_inputs, Y: test_outputs,init_state : np.zeros((test_inputs.shape[0], hidden_size))})
+        X: test_inputs, Y: test_outputs})
 
 
 print()
