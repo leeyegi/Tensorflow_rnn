@@ -3,11 +3,11 @@ import tensorflow as tf
 from tensorflow.python.tools import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
 
+#ckpt, pbtxt -> pb로 만들어주는 모듈
+
 MODEL_NAME = 'rnnraw'
 
 # Freeze the graph
-
-
 input_graph_path = '../rnnraw_datasetall_85_lr0.0001_e3000_fin/' + MODEL_NAME+'.pbtxt'
 checkpoint_path = '../rnnraw_datasetall_85_lr0.0001_e3000_fin/' +MODEL_NAME+'.ckpt'
 input_saver_def_path = ""
@@ -19,7 +19,7 @@ output_frozen_graph_name = '../frozen_'+MODEL_NAME+'.pb'
 output_optimized_graph_name = '../optimized_'+MODEL_NAME+'.pb'
 clear_devices = True
 
-
+#체크포인트와 pbtxt파일을 가지고와 model을 freeze시키는 메소드
 freeze_graph.freeze_graph(input_graph_path, input_saver_def_path,
                           input_binary, checkpoint_path, output_node_names,
                           restore_op_name, filename_tensor_name,
@@ -28,7 +28,6 @@ freeze_graph.freeze_graph(input_graph_path, input_saver_def_path,
 
 
 # Optimize for inference
-
 input_graph_def = tf.GraphDef()
 with tf.gfile.Open(output_frozen_graph_name, "rb") as f:
     data = f.read()

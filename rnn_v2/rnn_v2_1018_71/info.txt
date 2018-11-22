@@ -1,0 +1,12 @@
+data size - 
+training set -
+test set -
+
+rl - 0.01
+epoch - 1000
+batch size - 1024
+lstm 
+2 basic lstm -> multi rnn -> static rnn
+
+acc - 0.71
+loss - 1.7
