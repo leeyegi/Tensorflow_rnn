@@ -19,7 +19,7 @@ import random
 #불러올 파일 이름
 #태그파일이 아니라 로그파일만 불러와도 됨
 
-file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
+file_name=['../dataset_v2/HJH_2018_10_24_3_log.txt']
 
 
 #file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
@@ -118,9 +118,9 @@ def data_shape(df):
         #50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
         if df.loc[i, 'class_num'] == label_index and \
                 df.loc[i + 40, 'class_num'] != label_index and \
-                df.loc[i+10, 'class_num'] != label_index and\
-                df.loc[i + 40, 'class_num']==df.loc[i + 10, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
-            label_index=df.loc[i + 10, 'class_num']
+                df.loc[i + 10, 'class_num'] != label_index and \
+                df.loc[i + 40, 'class_num'] == df.loc[i + 10, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
+            label_index = df.loc[i + 10, 'class_num']
             #print(label_index)
 
             #i=i+25

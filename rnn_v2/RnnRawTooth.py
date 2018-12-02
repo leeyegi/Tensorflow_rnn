@@ -11,12 +11,13 @@ import seaborn as sns
 import random
 
 #데이터 파일
-file_name=['../dataset_v2/HJH_2018_10_03_3_log.txt', '../dataset_v2/HJH_2018_10_04_3_log.txt',
-           '../dataset_v2/HJH_2018_10_05_2_log.txt','../dataset_v2/HJH_2018_10_06_3_log.txt',
-           '../dataset_v2/HJH_2018_10_12_3_log.txt','../dataset_v2/HJH_2018_10_13_1_log.txt',
-           '../dataset_v2/HJH_2018_10_15_3_log.txt','../dataset_v2/HJH_2018_10_16_1_log.txt',      #데이터 조음
-           '../dataset_v2/HJH_2018_10_17_3_log.txt','../dataset_v2/HJH_2018_10_22_3_log.txt',
-           '../dataset_v2/HJH_2018_10_24_3_log.txt'                                                #데이터 조음
+file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt', '../dataset_v3/2_HJH_2018_11_21_3_log.txt',
+           '../dataset_v3/2_HJH_2018_11_26_3_log.txt','../dataset_v3/2_HJH_2018_11_27_1_log.txt',
+           '../dataset_v3/2_HJH_2018_11_27_2_log.txt','../dataset_v3/2_HJH_2018_11_28_2_log.txt',
+           '../dataset_v3/2_HJH_2018_11_28_3_log.txt','../dataset_v3/2_HJH_2018_11_29_1_log.txt',
+           '../dataset_v3/HJH_20181201.txt',
+           '../dataset_v2/HJH_2018_10_16_1_log.txt','../dataset_v2/HJH_2018_10_24_3_log.txt'
+
             ]
 
 #데이터를 불러와 data preprocessing모듈에서 dataframe형성해 label이 달린 데이터를 반환
