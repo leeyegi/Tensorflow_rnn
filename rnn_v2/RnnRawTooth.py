@@ -16,8 +16,10 @@ file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt', '../dataset_v3/2_HJH_2018
            '../dataset_v3/2_HJH_2018_11_27_2_log.txt','../dataset_v3/2_HJH_2018_11_28_2_log.txt',
            '../dataset_v3/2_HJH_2018_11_28_3_log.txt','../dataset_v3/2_HJH_2018_11_29_1_log.txt',
            '../dataset_v3/HJH_20181201.txt',
-           '../dataset_v2/HJH_2018_10_16_1_log.txt','../dataset_v2/HJH_2018_10_24_3_log.txt'
-
+           #'../dataset_v2/HJH_2018_10_16_1_log.txt','../dataset_v2/HJH_2018_10_24_3_log.txt'
+            '../dataset_v3/2_HJH_2018_12_06_1_log.txt','../dataset_v3/2_HJH_2018_12_06_3_log.txt',
+            '../dataset_v3/2_HJH_2018_12_07_3_log.txt','../dataset_v3/2_HJH_2018_12_08_1_log.txt',
+            '../dataset_v3/2_HJH_2018_12_08_3_log.txt'
             ]
 
 #데이터를 불러와 data preprocessing모듈에서 dataframe형성해 label이 달린 데이터를 반환
@@ -51,12 +53,12 @@ print(nclasses)
 
 
 #hyperparameter
-batch_size = int(ntrain/4)
-h_size = 40
+batch_size = int(ntrain/2)
+h_size = 60
 w_size = 6
 c_size = 1
 hidden_size = 512
-total_epoch=3000
+total_epoch=300
 learning_rate = 0.0001
 
 
@@ -68,7 +70,7 @@ tf.reset_default_graph()
 #===================================
 #placeholder
 X = tf.placeholder(tf.float32, shape=[None, h_size, w_size], name="in_") # [100, 28, 28, 1]
-Y = tf.placeholder(tf.float32, shape=[None, 16])
+Y = tf.placeholder(tf.float32,  shape=[None, 16])
 init_state = tf.placeholder(tf.float32, shape=[None, hidden_size], name="hidden_")      #학습하는 데이터 크기를 담는 placeholder
 print("placeholder")
 print(X.shape)
@@ -175,7 +177,6 @@ def accuracy(network, t):
     t_actual = tf.argmax(t, axis=1)
     return tf.reduce_mean(tf.cast(tf.equal(t_predict, t_actual), tf.float32))
 '''
-total_batch=4
 #===================================
 #rnn 모델 학습 
 #===================================
@@ -186,7 +187,7 @@ with tf.Session() as sess:
     for epoch in range(total_epoch):
         
         #batchsize만큼 학습 진행
-        for i in range(4):
+        for i in range(2):
             batch_x = x_train[i * batch_size:(i + 1) * batch_size]
             batch_y = y_train[i * batch_size:(i + 1) * batch_size]
             sess.run(optimizer, feed_dict={X: batch_x, Y: batch_y, init_state : np.zeros((batch_x.shape[0], hidden_size))})

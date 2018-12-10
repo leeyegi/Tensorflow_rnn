@@ -8,8 +8,8 @@ from tensorflow.python.tools import optimize_for_inference_lib
 MODEL_NAME = 'rnnraw'
 
 # Freeze the graph
-input_graph_path = '../rnnraw_data3_90_over50/' + MODEL_NAME+'.pbtxt'
-checkpoint_path = '../rnnraw_data3_90_over50/' +MODEL_NAME+'.ckpt'
+input_graph_path = '../rnnraw_shape40_overlapmax_e300_lr0.0001_98/' + MODEL_NAME+'.pbtxt'
+checkpoint_path = '../rnnraw_shape40_overlapmax_e300_lr0.0001_98/' +MODEL_NAME+'.ckpt'
 input_saver_def_path = ""
 input_binary = False
 output_node_names = "out_"

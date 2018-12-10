@@ -19,10 +19,10 @@ import random
 #불러올 파일 이름
 #태그파일이 아니라 로그파일만 불러와도 됨
 
-file_name=['../dataset_v2/HJH_2018_10_24_3_log.txt']
+file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt']
 
 
-#file_name=['dataset_v2/HJH_2018_10_03_3_log.txt', 'dataset_v2/HJH_2018_10_04_3_log.txt']
+#file_name=['../dataset_v2/HJH_2018_10_03_3_log.txt']
 
 
 #data frame의 index들
@@ -89,21 +89,22 @@ def plot_activity(label, df):
         #print(ax.__class__)
         #print(ax)
 
-N_TIME_STEPS = 40
+N_TIME_STEPS = 50
 N_FEATURES = 6
-step = 25
 segments = []
 labels = []
 #데이터를 50%씩 overlap하여 50개의 데이터저장(array)
 def data_shape(df):
+    a = 1
 
     len,_ = df.shape    #데이터의 shape
     label_index=1
     print("len"+str(len))
 
     #데이터를 받아와 50개씩 잘라 저장 overlap 50%
-    for i in range(0, len - 40, 10):
-        if df.loc[i, 'class_num'] == label_index and df.loc[i + 40, 'class_num'] == label_index:  # 50개의 6새센서 데이터가 한 세트
+    for i in range(0, len - 50, 25):
+        if df.loc[i, 'class_num'] == label_index and df.loc[i + 50, 'class_num'] == label_index:  # 50개의 6새센서 데이터가 한 세트
+            print("save")
             ax = df['ax'].values[i: i + N_TIME_STEPS]
             ay = df['ay'].values[i: i + N_TIME_STEPS]
             az = df['az'].values[i: i + N_TIME_STEPS]
@@ -115,13 +116,15 @@ def data_shape(df):
             segments.append([ax, ay, az, gx, gy, gz])
             labels.append(label)
 
-        #50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
+        # 50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
         if df.loc[i, 'class_num'] == label_index and \
-                df.loc[i + 40, 'class_num'] != label_index and \
-                df.loc[i + 10, 'class_num'] != label_index and \
-                df.loc[i + 40, 'class_num'] == df.loc[i + 10, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
-            label_index = df.loc[i + 10, 'class_num']
-            #print(label_index)
+                df.loc[i + 25, 'class_num'] != label_index and \
+                df.loc[i + 25, 'class_num'] == df.loc[i + 50, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
+            print("change"+str(a))
+            a+=1
+
+            label_index = df.loc[i + 30, 'class_num']
+            # print(label_index)
 
             #i=i+25
             #print(label_index)
@@ -130,7 +133,8 @@ def data_shape(df):
     reshaped_labels = np.array(pd.get_dummies(labels),dtype=np.float32)
 
     #print(segments)
-    #print(np.array(segments).shape)
+    print(np.array(segments).shape)
+    print(reshaped_segments.shape)
     #print(labels)
     #return segments, labels
     return reshaped_segments, reshaped_labels
@@ -146,10 +150,10 @@ if __name__ == "__main__":
 
     reshaped_segments,reshaped_labels=data_shape(get_df_data)
 
-    print(reshaped_segments)
-    print(reshaped_segments.shape)
-    print(reshaped_labels)
-    print(reshaped_labels.shape)
+    #print(reshaped_segments)
+    #print(reshaped_segments.shape)
+    #print(reshaped_labels)
+    #print(reshaped_labels.shape)
 
     #get_df_data.to_csv("../get_df_data.txt")
 
