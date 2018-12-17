@@ -19,7 +19,10 @@ file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt', '../dataset_v3/2_HJH_2018
            #'../dataset_v2/HJH_2018_10_16_1_log.txt','../dataset_v2/HJH_2018_10_24_3_log.txt'
             '../dataset_v3/2_HJH_2018_12_06_1_log.txt','../dataset_v3/2_HJH_2018_12_06_3_log.txt',
             '../dataset_v3/2_HJH_2018_12_07_3_log.txt','../dataset_v3/2_HJH_2018_12_08_1_log.txt',
-            '../dataset_v3/2_HJH_2018_12_08_3_log.txt'
+            '../dataset_v3/2_HJH_2018_12_08_3_log.txt',
+           '../dataset_v3/2_HJH_2018_12_13_1_log.txt', '../dataset_v3/2_HJH_2018_12_13_3_log.txt',
+           '../dataset_v3/2_HJH_2018_12_14_2_log.txt', '../dataset_v3/2_HJH_2018_12_16_3_log.txt',
+           '../dataset_v3/2_HJH_2018_12_17_1_log.txt'
             ]
 
 #데이터를 불러와 data preprocessing모듈에서 dataframe형성해 label이 달린 데이터를 반환
