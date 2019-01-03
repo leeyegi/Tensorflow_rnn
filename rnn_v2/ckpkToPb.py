@@ -8,15 +8,15 @@ from tensorflow.python.tools import optimize_for_inference_lib
 MODEL_NAME = 'rnnraw'
 
 # Freeze the graph
-input_graph_path = '../rnnraw_shape40_overlapmax_e300_lr0.0001_98/' + MODEL_NAME+'.pbtxt'
-checkpoint_path = '../rnnraw_shape40_overlapmax_e300_lr0.0001_98/' +MODEL_NAME+'.ckpt'
+input_graph_path = '../rnnraw1227_shape60_overlap50_95.3/' + MODEL_NAME+'.pbtxt'
+checkpoint_path = '../rnnraw1227_shape60_overlap50_95.3/' +MODEL_NAME+'.ckpt'
 input_saver_def_path = ""
 input_binary = False
 output_node_names = "out_"
 restore_op_name = "save/restore_all"
 filename_tensor_name = "save/Const:0"
-output_frozen_graph_name = '../frozen_'+MODEL_NAME+'.pb'
-output_optimized_graph_name = '../optimized_'+MODEL_NAME+'.pb'
+output_frozen_graph_name = '../frozen1227_overlap_'+MODEL_NAME+'.pb'
+output_optimized_graph_name = '../optimized1227_overlap_'+MODEL_NAME+'.pb'
 clear_devices = True
 
 #체크포인트와 pbtxt파일을 가지고와 model을 freeze시키는 메소드

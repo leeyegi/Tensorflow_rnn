@@ -1,6 +1,5 @@
 #데이터 preprocessing 후 rnn을 이용해 칫솔질 데이터 학습시키는 파일
 import tensorflow as tf
-import tensorflow.examples.tutorials.mnist.input_data as input_data
 import pickle
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,10 +19,13 @@ file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt', '../dataset_v3/2_HJH_2018
             '../dataset_v3/2_HJH_2018_12_06_1_log.txt','../dataset_v3/2_HJH_2018_12_06_3_log.txt',
             '../dataset_v3/2_HJH_2018_12_07_3_log.txt','../dataset_v3/2_HJH_2018_12_08_1_log.txt',
             '../dataset_v3/2_HJH_2018_12_08_3_log.txt',
-           '../dataset_v3/2_HJH_2018_12_13_1_log.txt', '../dataset_v3/2_HJH_2018_12_13_3_log.txt',
-           '../dataset_v3/2_HJH_2018_12_14_2_log.txt', '../dataset_v3/2_HJH_2018_12_16_3_log.txt',
-           '../dataset_v3/2_HJH_2018_12_17_1_log.txt'
-            ]
+            '../dataset_v3/2_HJH_2018_12_13_1_log.txt', '../dataset_v3/2_HJH_2018_12_13_3_log.txt',
+            '../dataset_v3/2_HJH_2018_12_14_2_log.txt', '../dataset_v3/2_HJH_2018_12_16_3_log.txt',
+            '../dataset_v3/2_HJH_2018_12_17_1_log.txt',
+            '../dataset_v3/2_HJH_2018_12_18_1_log.txt', '../dataset_v3/2_HJH_2018_12_20_3_log.txt',
+            '../dataset_v3/2_HJH_2018_12_21_2_log.txt', '../dataset_v3/2_HJH_2018_12_22_3_log.txt',
+            '../dataset_v3/2_HJH_2018_12_27_1_log.txt', '../dataset_v3/2_HJH_2018_12_28_2_log.txt'
+           ]
 
 #데이터를 불러와 data preprocessing모듈에서 dataframe형성해 label이 달린 데이터를 반환
 get_df_data = data_preprocessing.get_data(file_name)

@@ -118,8 +118,8 @@ def data_shape(df):
 
         # 50개씩 자를때 첫번째와 50번째에 class_num값이 다르면 class_num 바꿈
         if df.loc[i, 'class_num'] == label_index and \
-                df.loc[i + 30, 'class_num'] != label_index and \
-                df.loc[i + 30, 'class_num'] == df.loc[i + 60, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
+                df.loc[i + 60, 'class_num'] != label_index and \
+                df.loc[i + 60, 'class_num'] == df.loc[i + 30, 'class_num']:  # 50개의 6새센서 데이터가 한 세트
             print("change"+str(a))
             a+=1
 
