@@ -24,7 +24,19 @@ file_name=['../dataset_v3/2_HJH_2018_11_19_1_log.txt', '../dataset_v3/2_HJH_2018
             '../dataset_v3/2_HJH_2018_12_17_1_log.txt',
             '../dataset_v3/2_HJH_2018_12_18_1_log.txt', '../dataset_v3/2_HJH_2018_12_20_3_log.txt',
             '../dataset_v3/2_HJH_2018_12_21_2_log.txt', '../dataset_v3/2_HJH_2018_12_22_3_log.txt',
-            '../dataset_v3/2_HJH_2018_12_27_1_log.txt', '../dataset_v3/2_HJH_2018_12_28_2_log.txt'
+            '../dataset_v3/2_HJH_2018_12_27_1_log.txt', '../dataset_v3/2_HJH_2018_12_28_2_log.txt',
+
+           '../dataset_v3/2_HJH_2019_01_04_3_log.txt', '../dataset_v3/2_HJH_2019_01_05_2_log.txt',
+           '../dataset_v3/2_HJH_2019_01_05_3_log.txt', '../dataset_v3/2_HJH_2019_01_07_3_log.txt',
+
+           '../dataset_v3/2_HJH_2018_12_12_3_log.txt', '../dataset_v3/2_HJH_2018_12_17_3_log.txt',
+           '../dataset_v3/2_HJH_2018_12_26_3_log.txt', '../dataset_v3/2_HJH_2019_01_14_3_log.txt',
+           '../dataset_v3/2_HJH_2019_01_15_2_log.txt', '../dataset_v3/2_HJH_2019_01_16_3_log.txt',
+           '../dataset_v3/2_HJH_2019_01_17_2_log.txt', '../dataset_v3/2_HJH_2019_01_17_3_log.txt',
+           '../dataset_v3/2_HJH_2019_01_25_2_log.txt', '../dataset_v3/2_HJH_2019_01_25_3_log.txt',
+           '../dataset_v3/2_HJH_2019_01_29_3_log.txt', '../dataset_v3/2_HJH_2019_01_30_2_log.txt',
+           '../dataset_v3/2_HJH_2019_01_30_3_log.txt', '../dataset_v3/2_HJH_2019_02_01_2_log.txt',
+           '../dataset_v3/2_HJH_2019_02_01_3_log.txt'
            ]
 
 #데이터를 불러와 data preprocessing모듈에서 dataframe형성해 label이 달린 데이터를 반환
@@ -59,11 +71,11 @@ print(nclasses)
 
 #hyperparameter
 batch_size = int(ntrain/2)
-h_size = 60
+h_size = 80
 w_size = 6
 c_size = 1
 hidden_size = 512
-total_epoch=300
+total_epoch=1000
 learning_rate = 0.0001
 
 
